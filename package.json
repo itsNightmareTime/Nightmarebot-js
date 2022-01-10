@@ -1,0 +1,15 @@
+{
+  "name": "Nightmarebot-js",
+  "version": "1.0.0",
+  "description": "A Discord Bot",
+  "main": "index.js",
+  "repository": "git@github.com:itsNightmareTime/Nightmarebot-js.git",
+  "author": "<harrisonarmstrong93@gmail.com>",
+  "license": "GNU-V3",
+  "dependencies": {
+    "discord.js": "^13.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0"
+  }
+}
