@@ -1,17 +1,24 @@
 {
-  "name": "Nightmarebot-js",
+  "name": "nightmarebot-js",
   "version": "1.0.0",
   "description": "A Discord Bot",
   "main": "index.ts",
   "repository": "git@github.com:itsNightmareTime/Nightmarebot-js.git",
   "author": "<harrisonarmstrong93@gmail.com>",
-  "license": "GNU-V3",
+  "license": "GNU3",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@discordjs/builders": "^0.11.0",
+    "@discordjs/rest": "^0.2.0-canary.0",
+    "add": "^2.0.6",
+    "discord-api-types": "^0.26.1",
     "discord.js": "^13.5.1",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "global": "^4.4.0",
+    "pm2": "^5.1.2"
   },
   "devDependencies": {
     "eslint": "^8.6.0",
