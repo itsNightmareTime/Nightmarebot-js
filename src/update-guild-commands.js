@@ -19,7 +19,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 		console.log('Started refreshing application guild (/) commands.');
 
 		await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.SWAT_GUILD_ID),
 			{ body: commands },
 		);
 
