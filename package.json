@@ -7,8 +7,9 @@
   "author": "<harrisonarmstrong93@gmail.com>",
   "license": "GNU3",
   "scripts": {
-    "start": "node .",
-    "lint": "eslint ."
+    "start": "node src/index.js",
+    "deploy-commands": "cd src && node deploy-commands.js",
+    "update-commands": "cd src && node update-commands.js"
   },
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
