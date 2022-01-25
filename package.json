@@ -7,23 +7,19 @@
   "author": "<harrisonarmstrong93@gmail.com>",
   "license": "GNU3",
   "scripts": {
-    "start": "ts-node src/bot.ts",
-    "lint": "eslint ."
+    "start": "node src/index.js",
+    "deploy-commands": "cd src && node deploy-commands.js",
+    "update-commands": "cd src && node update-commands.js"
+
   },
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",
-    "add": "^2.0.6",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.5.1",
     "dotenv": "^10.0.0",
     "global": "^4.4.0",
     "pm2": "^5.1.2"
   },
-  "devDependencies": {
-    "@types/node": "^17.0.8",
-    "eslint": "^8.6.0",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
-  }
+  "devDependencies": {}
 }
