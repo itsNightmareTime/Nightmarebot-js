@@ -177,7 +177,7 @@ class Roller:
         self.roll = roll
 
         # print("Seeding PRNG of map " + self.mapName + " with: " + str(self.roll))
-
+        print(self.roll)
         # Roll the prng a few times to make it "more random"
         for i in range(5):
             self.rollPRNG()
@@ -199,7 +199,7 @@ class Roller:
 
         self.roll = t % self.BASE
         self.remainder = math.floor(t/self.BASE)
-
+        print(self.roll)
         return int(self.roll)
 
     # @param challenges | array of strings

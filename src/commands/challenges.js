@@ -86,11 +86,15 @@ const coreChallengeNames = [
     "fastEnemies", // Enemies have more movespeed
     "backgroundRadiation", // Passive radiation (like in defense)
     "fluctuatingRadiation", // Rad count randomly fluctuates over time
+    //"toughRads", // Rads have more hp UNIMPLEMENTED
     "morePriority", // More non-zombie enemies spawn
     "abmStocks", // ABMs have reduced stocks
     "moreTimeUber", // Time uber increases more (like extinction)
+    //"moreVarieties", // More varieties of enemies spawn (as if higher difficulty) UNIMPLEMENTED
     "moreSpecialZombies", // More special zombies spawn (higher chance)
+    //"randomBuilds", // Player builds are randomised after selection -- DISABLED DUE TO UNPOPULARITY
     "fastRevives", // Zombies revive from corpses faster
+    //"moreSpecialPriority" // More special priority spawn (higher chance) UNIMPLEMENTED
     "bloatedCorpses", // Corpses explode
     "friendsClose", // Team must stick together or take damage
     "enemiesCloser", // Enemies will spawn close to the team
@@ -99,8 +103,10 @@ const coreChallengeNames = [
 
 const nightmareChallengeNames = [
     "doubleBosses", // More double bosses spawn
+    //"lurkingUmbrella", // Umbrella patrols start on the map UNIMPLEMENTED
     "umbrellaNukes", // Periodic umbrella nukes hit the team
     "crossContamination", // Enemies from other maps can spawn
+    //"rookies", // Rank bonuses are disabled
     "itFollows", // Single large invulnerable innard that hunts down team
 
 ]
@@ -136,6 +142,7 @@ class Roller {
         roll = roll += dateNumber;
         roll = roll + this.hashString(this.mapName);
         this.roll = roll;
+        console.log(this.roll);
         for (let i = 0; i < 5; i++) {
             this.rollPrng();
         }
@@ -162,7 +169,7 @@ class Roller {
         //console.log(this.roll);
         this.remainder = Math.floor(t / this.base)
         //console.log(this.remainder);
-
+        console.log(this.roll)
         return this.roll;
     }
 
