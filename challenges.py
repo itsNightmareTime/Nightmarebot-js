@@ -166,14 +166,10 @@ class Roller:
         today = datetime.now(DOTA_TIME_ZONE)
         # date =  GetSystemDate() # Month day year
         dateNumber = int(today.strftime("%m%d%y"))
-        print("Date:", dateNumber);
         roll = roll + dateNumber
-        print('roll + dateNumber:', roll)
 
         # Set an offset based on the map name
-
         roll = roll + self.hashString(self.mapName)
-        print('Roll in setupPRNG', roll)
 
         # Seed the PRNG
         self.roll = roll
@@ -195,15 +191,9 @@ class Roller:
         return retval
 
     def rollPRNG(self):
-        print("ROLLING: -------------------------------------")
         t = (self.MULTIPLICANT * self.roll) + self.remainder
-        print('T:', t)
-
         self.roll = t % self.BASE
-        print('Roll:', self.roll)
         self.remainder = math.floor(t/self.BASE)
-        print('Remainder:', self.remainder)
-        print("Finished: ------------------------------------")
         return int(self.roll)
 
     # @param challenges | array of strings
