@@ -138,12 +138,8 @@ class Roller {
         //console.log("Setting up PRNG")
         let roll = 17
         const dateNumber = parseInt(strftime('%m%d%y', new Date(Date.now())));
-        console.log(typeof dateNumber);
-        console.log("Date Number:", dateNumber);
         roll = roll += dateNumber;
-        console.log('Roll + dateNumber:', roll)
         roll = roll + this.hashString(this.mapName);
-        console.log('Roll in setupPRNG:', roll)
         this.roll = roll;
         for (let i = 0; i < 5; i++) {
             this.rollPrng();
@@ -164,15 +160,9 @@ class Roller {
     }
 
     rollPrng() {
-        console.log("ROLLING: -------------------------------------");
         const t = (this.multiplicant * this.roll) + this.remainder;
-        console.log('T:', t)
-
         this.roll = t % this.base;
-        console.log('Roll:', this.roll);
         this.remainder = Math.floor(t / this.base)
-        console.log('Remainder:', this.remainder);
-        console.log("Finished: ------------------------------------");
         return this.roll;
     }
 
@@ -185,13 +175,17 @@ class Roller {
 
     nightmareChallengeDescription() {
         let challenges = [...coreChallengeNames]
+        console.log('Starting Challenges:', challenges);
         let retval = '';
         
         for (let i = 0; i < 3; i++) {
             let challenge = this.rollForChallenges(challenges);
+            console.log('Selecting Challenge:', challenge)
             const index = challenges.indexOf(challenge)
             challenges.splice(index - 1, 1);
+            console.log('Challenges After Selected:', challenges);
             retval += challengeDescription(challenge);
+            console.log(retval);
         }
 
         challenges  = [...challenges, ...nightmareChallengeNames];
