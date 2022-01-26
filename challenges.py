@@ -168,6 +168,7 @@ class Roller:
         dateNumber = int(today.strftime("%m%d%y"))
         print("Date:", dateNumber);
         roll = roll + dateNumber
+        print('roll + dateNumber:', roll)
 
         # Set an offset based on the map name
 
