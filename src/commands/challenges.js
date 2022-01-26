@@ -142,9 +142,15 @@ class Roller {
     }
     
     hashString(string) {
-        for(var i = 0, hash = 0; i < string.length; i++)
-            hash = Math.imul(31, hash) + string.charCodeAt(i) | 0;
-        return hash;
+        retval = 0;
+        let array = [];
+        for (let i = 0; i < string.length; i++) {
+            array.push(string.charCodeAt(i));
+        }
+        array.forEach((byte, index) => {
+            retval = retval + ((index + 1) * byte * ((index + 1) + byte))
+        })
+        return retval;
     }
 
     rollPrng() {
