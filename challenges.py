@@ -214,12 +214,16 @@ class Roller:
     # @param challenges | array of strings
     def nightmareChallengeDescription(self):
         challenges = list(CORE_CHALLENGE_NAMES)
+        print('Starting Challenges:', challenges)
         retval = ""
         # 3 Non-NM challenges
         for i in range(3):
             challenge = self.rollForChallenges(challenges)
+            print('Selecting Challenge:', challenge)
             challenges.remove(challenge)
+            print('Challenges After Selected:' challenges)
             retval += challengeDescription(challenge)
+            print(retval)
 
         # One that may have NM only challenges
         challenges += NIGHTMARE_CHALLENGE_NAMES
