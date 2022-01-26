@@ -112,7 +112,6 @@ const nightmareChallengeNames = [
 ]
 
 const challengeDescription = (challenge) => {
-    //console.log(challenge);
     const title = english[`${challenge}_title`];
     const description = english[`${challenge}_inactive`]
     return `* ${title} \n ${description} \n`
@@ -135,7 +134,6 @@ class Roller {
     };
 
     setupPrng() {
-        //console.log("Setting up PRNG")
         let roll = 17
         const dateNumber = parseInt(strftime('%m%d%y', new Date(Date.now())));
         roll = roll += dateNumber;
@@ -167,25 +165,19 @@ class Roller {
     }
 
     rollForChallenges(challenges) {
-        //console.log("Rolling:", this.rollPrng());
         const roll = (this.rollPrng() % challenges.length);
-        //console.log(roll);
         return challenges[roll];
     }
 
     nightmareChallengeDescription() {
         let challenges = [...coreChallengeNames]
-        console.log('Starting Challenges:', challenges);
         let retval = '';
         
         for (let i = 0; i < 3; i++) {
             let challenge = this.rollForChallenges(challenges);
-            console.log('Selecting Challenge:', challenge)
             const index = challenges.indexOf(challenge)
             challenges.splice(index, 1);
-            console.log('Challenges After Selected:', challenges);
             retval += challengeDescription(challenge);
-            console.log(retval);
         }
 
         challenges  = [...challenges, ...nightmareChallengeNames];
