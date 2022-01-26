@@ -131,8 +131,8 @@ class Roller {
     setupPrng() {
         //console.log("Setting up PRNG")
         let roll = 17
-        const dateNumber = strftime('%m%d%y', new Date());
-        //console.log("Date Number:", dateNumber);
+        const dateNumber = strftime('%m%d%y', new Date(Date.now()));
+        console.log("Date Number:", dateNumber);
         roll = roll += dateNumber;
         roll = roll + this.hashString(this.mapName);
         this.roll = roll;
@@ -142,7 +142,7 @@ class Roller {
     }
     
     hashString(string) {
-        retval = 0;
+        let retval = 0;
         let array = [];
         for (let i = 0; i < string.length; i++) {
             array.push(string.charCodeAt(i));
