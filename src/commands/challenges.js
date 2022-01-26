@@ -182,7 +182,7 @@ class Roller {
             let challenge = this.rollForChallenges(challenges);
             console.log('Selecting Challenge:', challenge)
             const index = challenges.indexOf(challenge)
-            challenges.splice(index - 1, 1);
+            challenges.splice(index, 1);
             console.log('Challenges After Selected:', challenges);
             retval += challengeDescription(challenge);
             console.log(retval);
