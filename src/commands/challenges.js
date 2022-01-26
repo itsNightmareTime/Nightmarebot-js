@@ -151,13 +151,13 @@ class Roller {
     hashString(string) {
         let retval = 0;
         let array = [];
-        for (let i = 0; i < string.length; i++) {
-            array.push(string.charCodeAt(i));
+        let buffer = Buffer.from(string, 'utf8');
+        for (let i = 0; i < buffer.length; i++) {
+            array.push(buffer[i]);
         }
         array.forEach((byte, index) => {
             retval = retval + ((index + 1) * byte * ((index + 1) + byte))
         })
-        console.log(retval);
         return retval;
     }
 
