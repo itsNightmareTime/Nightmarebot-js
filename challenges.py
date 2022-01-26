@@ -191,6 +191,7 @@ class Roller:
             # byte = bytes(character, 'utf-8')
             byte = Array[index]
             retval = retval + ((index+1) * (byte) * ((index+1) + byte)) # Index+1 because Lua is 1 indexed
+        print(retval)
         return retval
 
     def rollPRNG(self):

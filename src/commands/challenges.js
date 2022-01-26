@@ -150,6 +150,7 @@ class Roller {
         array.forEach((byte, index) => {
             retval = retval + ((index + 1) * byte * ((index + 1) + byte))
         })
+        console.log(retval);
         return retval;
     }
 
