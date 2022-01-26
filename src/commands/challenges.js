@@ -137,9 +137,10 @@ class Roller {
     setupPrng() {
         //console.log("Setting up PRNG")
         let roll = 17
-        const dateNumber = strftime('%m%d%y', new Date(Date.now()));
+        const dateNumber = parseInt(strftime('%m%d%y', new Date(Date.now())));
+        console.log(typeof dateNumber);
         console.log("Date Number:", dateNumber);
-        roll = roll += parseInt(dateNumber);
+        roll = roll += dateNumber;
         console.log('Roll + dateNumber:', roll)
         roll = roll + this.hashString(this.mapName);
         console.log('Roll in setupPRNG:', roll)
