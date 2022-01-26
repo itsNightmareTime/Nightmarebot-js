@@ -141,8 +141,8 @@ class Roller {
         console.log("Date Number:", dateNumber);
         roll = roll += dateNumber;
         roll = roll + this.hashString(this.mapName);
+        console.log('Roll in setupPRNG:', roll)
         this.roll = roll;
-        console.log(this.roll);
         for (let i = 0; i < 5; i++) {
             this.rollPrng();
         }
