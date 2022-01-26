@@ -221,7 +221,7 @@ class Roller:
             challenge = self.rollForChallenges(challenges)
             print('Selecting Challenge:', challenge)
             challenges.remove(challenge)
-            print('Challenges After Selected:' challenges)
+            print('Challenges After Selected:', challenges)
             retval += challengeDescription(challenge)
             print(retval)
 
