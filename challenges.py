@@ -166,18 +166,18 @@ class Roller:
         today = datetime.now(DOTA_TIME_ZONE)
         # date =  GetSystemDate() # Month day year
         dateNumber = int(today.strftime("%m%d%y"))
-        print(dateNumber);
+        print("Date:", dateNumber);
         roll = roll + dateNumber
 
         # Set an offset based on the map name
 
         roll = roll + self.hashString(self.mapName)
+        print('Roll in setupPRNG', roll)
 
         # Seed the PRNG
         self.roll = roll
 
         # print("Seeding PRNG of map " + self.mapName + " with: " + str(self.roll))
-        print(self.roll)
         # Roll the prng a few times to make it "more random"
         for i in range(5):
             self.rollPRNG()
@@ -191,15 +191,18 @@ class Roller:
             # byte = bytes(character, 'utf-8')
             byte = Array[index]
             retval = retval + ((index+1) * (byte) * ((index+1) + byte)) # Index+1 because Lua is 1 indexed
-        print(retval)
         return retval
 
     def rollPRNG(self):
+        print("ROLLING: -------------------------------------")
         t = (self.MULTIPLICANT * self.roll) + self.remainder
+        print('T:', t)
 
         self.roll = t % self.BASE
+        print('Roll:', self.roll)
         self.remainder = math.floor(t/self.BASE)
-        print(self.roll)
+        print('Remainder:', self.remainder)
+        print("Finished: ------------------------------------")
         return int(self.roll)
 
     # @param challenges | array of strings

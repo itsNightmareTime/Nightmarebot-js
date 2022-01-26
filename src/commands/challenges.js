@@ -162,14 +162,15 @@ class Roller {
     }
 
     rollPrng() {
+        console.log("ROLLING: -------------------------------------");
         const t = (this.multiplicant * this.roll) + this.remainder;
-        //console.log(t);
+        console.log('T:', t)
 
         this.roll = t % this.base;
-        //console.log(this.roll);
+        console.log('Roll:', this.roll);
         this.remainder = Math.floor(t / this.base)
-        //console.log(this.remainder);
-        console.log(this.roll)
+        console.log('Remainder:', this.remainder);
+        console.log("Finished: ------------------------------------");
         return this.roll;
     }
 
