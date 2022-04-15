@@ -1,6 +1,7 @@
 const { Client, Intents, Collection } = require('discord.js');
 const dotenv = require('dotenv');
 const fs = require('fs');
+const db = require('./config/connection');
 dotenv.config();
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -34,4 +35,6 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.login(process.env.BOT_TOKEN);
+db.once('open', () => {
+	client.login(process.env.BOT_TOKEN);
+});
