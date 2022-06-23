@@ -96,7 +96,7 @@ const coreChallengeNames = [
     "fastRevives", // Zombies revive from corpses faster
     //"moreSpecialPriority" // More special priority spawn (higher chance) UNIMPLEMENTED
     "bloatedCorpses", // Corpses explode
-    "friendsClose", // Team must stick together or take damage
+    //"friendsClose", // Team must stick together or take damage
     "enemiesCloser", // Enemies will spawn close to the team
     "shortSighted", // Every unit on officers' team has reduced sight range
 ]
