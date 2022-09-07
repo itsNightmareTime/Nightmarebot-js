@@ -105,8 +105,6 @@ const coreChallengeNames = [
 	// Corpses explode
 	'bloatedCorpses',
 	// Team must stick together or take damage
-	'friendsClose',
-	// Enemies will spawn close to the team
 	'enemiesCloser',
 	// Every unit on officers' team has reduced sight range
 	'shortSighted',
