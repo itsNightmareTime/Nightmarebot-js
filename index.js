@@ -3,10 +3,12 @@ const path = require('node:path');
 // Require the necessary discord.js classes
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const dotenv = require('dotenv');
+const User = require('./models/user');
 dotenv.config();
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -37,7 +39,8 @@ client.on('interactionCreate', async interaction => {
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	console.log('Ready!');
+	console.log(`Logged in as ${client.user.tag}!`);
+	User.sync({ alter: true });
 });
 
 // Login to Discord with your client's token
