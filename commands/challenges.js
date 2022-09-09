@@ -3,80 +3,106 @@ const { EmbedBuilder } = require('discord.js');
 const strftime = require('strftime');
 
 const english = {
-	'toughZombies_title': 'Tough Zombies',
-	'toughZombies_inactive': 'Zombies are extra tough.',
-
-	'abmStocks_title': 'Short Supply',
-	'abmStocks_inactive': 'A.B.M.s have limited inventory.',
-
-	'chaseyMob_title': 'Hive Mind',
-	'chaseyMob_inactive': 'The horde follows more closely.',
-
-	'doubleBosses_title': 'Double Trouble',
-	'doubleBosses_inactive': 'Double boss spawns are more common.',
-
-	'extraBosses_title': 'Boss Bonanza',
-	'extraBosses_inactive': 'More bosses will spawn',
-
-	'fastEnemies_title': 'Brainlusted Horde',
-	'fastEnemies_inactive': 'Enemies are faster.',
-
-	'lurkingUmbrella_title': 'Mercenary Checkpoints',
-	'lurkingUmbrella_inactive': 'Soldiers start on the map.',
-
-	'morePriority_title': 'Epidemic',
-	'morePriority_inactive': 'More grotesques, ghouls, mutants, and dogs spawn.',
-
-	'moreSpecialPriority_title': 'Furious Fangs',
-	'moreSpecialPriority_inactive': 'More special grotesques, ghouls and dogs spawn.',
-
-	'moreSpecialZombies_title': 'Cruel Claws',
-	'moreSpecialZombies_inactive': 'More special zombies spawn.',
-
-	'moreTimeUber_title': 'Against the clock',
-	'moreTimeUber_inactive': 'Difficulty increases faster with time.',
-
-	'moreUber_title': 'Uber Problems',
-	'moreUber_inactive': 'Difficulty increases faster with levels.',
-
-	'moreVarieties_title': 'Spice of Life',
-	'moreVarieties_inactive': 'A greater variety of special enemies can spawn.',
-
-	'toughRads_title': 'Bloated Fragments',
-	'toughRads_inactive': 'Rad fragments are extra tough.',
-
-	'umbrellaNukes_title': 'Nuclear',
-	'umbrellaNukes_inactive': 'The squad will be targetted by periodic nuclear strikes.',
-
-	'backgroundRadiation_title': 'Residual Radiation',
-	'backgroundRadiation_inactive': 'Background radiation increases over time.',
-
-	'rookies_title': 'Rookies',
-	'rookies_inactive': 'Rank bonuses are disabled.',
-
-	'fluctuatingRadiation_title': 'Fluctuating Radiation',
-	'fluctuatingRadiation_inactive': 'Background radiation fluctuates with time.',
-
-	'fastRevives_title': 'Regenerative Strain',
-	'fastRevives_inactive': 'Zombies revive faster.',
-
-	'crossContamination_title': 'Cross Contamination',
-	'crossContamination_inactive': 'Enemies from other maps appear.',
-
-	'bloatedCorpses_title': 'Bloated Corpses',
-	'bloatedCorpses_inactive': 'Corpses Explode',
-
-	'friendsClose_title': 'Friends Close',
-	'friendsClose_inactive': 'Team must stick together or take damage.',
-
-	'enemiesCloser_title': 'Enemies Closer',
-	'enemiesCloser_inactive': 'Enemies will spawn close to the team',
-
-	'shortSighted_title': 'Short Sighted',
-	'shortSighted_inactive': 'Every unit on officer\'s team has reduced sight range.',
-
-	'itFollows_title': 'It Follows',
-	'itFollows_inactive': 'Single large invulnerable innards that hunts down team.',
+	toughZombies: {
+		title: 'Tough Zombies',
+		description: 'Zombies are extra tough.',
+	},
+	abmStocks: {
+		title: 'Short Supply',
+		description: 'A.B.M.s have limited inventory.',
+	},
+	chaseyMob: {
+		title: 'Hive Mind',
+		description: 'The horde follows more closely.',
+	},
+	doubleBosses: {
+		title: 'Double Trouble',
+		description: 'Double boss spawns are more common.',
+	},
+	extraBosses: {
+		title: 'Boss Bonanza',
+		description: 'More bosses will spawn',
+	},
+	fastEnemies: {
+		title: 'Brainlusted Horde',
+		description: 'Enemies are faster.',
+	},
+	lurkingUmbrella: {
+		title: 'Mercenary Checkpoints',
+		description: 'Soldiers start on the map.',
+	},
+	morePriority: {
+		title: 'Epidemic',
+		description: 'More grotesques, ghouls, mutants, and dogs spawn.',
+	},
+	moreSpecialPriority: {
+		title: 'Furious Fangs',
+		description: 'More special grotesques, ghouls and dogs spawn.',
+	},
+	moreSpecialZombies: {
+		title: 'Cruel Claws',
+		description: 'More special zombies spawn.',
+	},
+	moreTimeUber: {
+		title: 'Against the clock',
+		description: 'Difficulty increases faster with time.',
+	},
+	moreUber: {
+		title: 'Uber Problems',
+		description: 'Difficulty increases faster with levels.',
+	},
+	moreVarieties: {
+		title: 'Spice of Life',
+		description: 'A greater variety of special enemies can spawn.',
+	},
+	toughRads: {
+		title: 'Bloated Fragments',
+		description: 'Rad fragments are extra tough.',
+	},
+	umbrellaNukes: {
+		title: 'Nuclear',
+		description: 'The squad will be targetted by periodic nuclear strikes.',
+	},
+	backgroundRadiation: {
+		title: 'Residual Radiation',
+		description: 'Background radiation increases over time.',
+	},
+	rookies: {
+		title: 'Rookies',
+		description: 'Rank bonuses are disabled.',
+	},
+	fluctuatingRadiation: {
+		title: 'Fluctuating Radiation',
+		description: 'Background radiation fluctuates with time.',
+	},
+	fastRevives: {
+		title: 'Regenerative Strain',
+		description: 'Zombies revive faster.',
+	},
+	crossContamination: {
+		title: 'Cross Contamination',
+		description: 'Enemies from other maps appear.',
+	},
+	bloatedCorpses: {
+		title: 'Bloated Corpses',
+		description: 'Corpses Explode',
+	},
+	friendsClose: {
+		title: 'Friends Close',
+		description: 'Team must stick together or take damage.',
+	},
+	enemiesCloser: {
+		title: 'Enemies Closer',
+		description: 'Enemies will spawn close to the team',
+	},
+	shortSighted: {
+		title: 'Short Sighted',
+		description: 'Every unit on officer\'s team has reduced sight range.',
+	},
+	itFollows: {
+		title: 'It Follows',
+		description: 'Single large invulnerable innards that hunts down team.',
+	},
 };
 
 const coreChallengeNames = [
@@ -123,9 +149,8 @@ const nightmareChallengeNames = [
 ];
 
 const challengeDescription = (challenge) => {
-	const title = english[`${challenge}_title`];
-	const description = english[`${challenge}_inactive`];
-	return `* ${title} \n ${description} \n`;
+	const challengeData = english[challenge];
+	return `* ${challengeData.title} \n ${challengeData.description} \n`;
 };
 
 const getChallenges = (map) => {
