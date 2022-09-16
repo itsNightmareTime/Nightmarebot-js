@@ -1,11 +1,14 @@
 {
-  "name": "Nightmarebot-js",
+  "name": "nightmarebot-js",
   "version": "1.0.0",
   "description": "Swat-Server Discord Bot",
   "main": "index.ts",
   "repository": "git@github.com:itsNightmareTime/Nightmarebot-js.git",
   "author": "harrisonarmstrong93@gmail.com <harrisonarmstrong93@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/bot.ts"
+  },
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
     "discord.js": "^14.3.0",
@@ -13,6 +16,9 @@
     "strftime": "^0.10.1"
   },
   "devDependencies": {
-    "eslint": "^8.23.0"
+    "@types/node": "^18.7.18",
+    "eslint": "^8.23.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
   }
 }
