@@ -1,8 +1,18 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder } = require('discord.js');
+import { Client, EmbedBuilder, CommandInteraction } from "discord.js";
+import { describe } from "node:test";
+import { Command } from '../Command';
 const strftime = require('strftime');
 
-const english = {
+type Challenge = {
+	title: string;
+	description: string
+}
+
+type ChallengeData = {
+    [key: string]: Challenge;
+};
+
+const english: ChallengeData = {
 	toughZombies: {
 		title: 'Tough Zombies',
 		description: 'Zombies are extra tough.',
@@ -102,7 +112,7 @@ const english = {
 	itFollows: {
 		title: 'It Follows',
 		description: 'Single large invulnerable innards that hunts down team.',
-	},
+	}
 };
 
 const coreChallengeNames = [
@@ -145,31 +155,35 @@ const nightmareChallengeNames = [
 	'crossContamination',
 	// Single large invulnerable innard that hunts down team
 	'itFollows',
-
 ];
 
-const challengeDescription = (challenge) => {
-	const challengeData = english[challenge];
-	return `* ${challengeData.title} \n ${challengeData.description} \n`;
+const challengeDescription = (challenge: string): string => {
+	const challengeInfo = english[challenge];
+	return `* ${challengeInfo.title} \n ${challengeInfo.description} \n`;
 };
 
-const getChallenges = (map) => {
+const getChallenges = (map: string): string => {
 	const roller = new Roller(map);
 	return roller.nightmareChallengeDescription();
 };
 
 class Roller {
+	private mapName: string;
+	private base: number;
+	private multiplicant: number;
+	private remainder: number;
+	private roll: number;
 
-	constructor(map) {
+	constructor(map: string) {
 		this.mapName = map;
 		this.base = Math.pow(2, 16) - 1;
 		this.multiplicant = 83;
-		this.role = 0;
+		this.roll = 0;
 		this.remainder = 42;
 		this.setupPrng();
 	}
 
-	setupPrng() {
+	setupPrng(): void {
 		let roll = 17;
 		const dateNumber = parseInt(strftime('%m%d%y', new Date(Date.now())));
 		roll = roll += dateNumber;
@@ -180,9 +194,9 @@ class Roller {
 		}
 	}
 
-	hashString(string) {
+	hashString(string: string): number {
 		let retval = 0;
-		const array = [];
+		const array: number[] = [];
 		const buffer = Buffer.from(string, 'utf8');
 		for (let i = 0; i < buffer.length; i++) {
 			array.push(buffer[i]);
@@ -193,19 +207,19 @@ class Roller {
 		return retval;
 	}
 
-	rollPrng() {
+	rollPrng(): number {
 		const t = (this.multiplicant * this.roll) + this.remainder;
 		this.roll = t % this.base;
 		this.remainder = Math.floor(t / this.base);
 		return this.roll;
 	}
 
-	rollForChallenges(challenges) {
+	rollForChallenges(challenges: string []): string {
 		const roll = (this.rollPrng() % challenges.length);
 		return challenges[roll];
 	}
 
-	nightmareChallengeDescription() {
+	nightmareChallengeDescription(): string {
 		let challenges = [...coreChallengeNames];
 		let retval = '';
 
@@ -225,11 +239,10 @@ class Roller {
 
 }
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('challenges')
-		.setDescription('Displays todays challenges'),
-	async execute(interaction) {
+export const Challenges: Command = {
+	name: 'challenges',
+	description: 'Displays todays challenges',
+	run: async (client: Client, interaction: CommandInteraction) => {
 		const challengesEmbed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle('Challenges')
@@ -242,7 +255,11 @@ module.exports = {
 			await interaction.reply({ embeds: [challengesEmbed], ephemeral: true });
 		}
 		catch (error) {
-			await interaction.reply({ ephemeral: true, content: `Error processing command: ${error.message}` });
+			if (error instanceof Error) {
+				await interaction.reply({ ephemeral: true, content: `Error processing command: ${error.message}` });
+			} else {
+				await interaction.reply({ ephemeral: true, content: `Error processing command: No Message Given` });
+			}
 		}
 	},
 };
