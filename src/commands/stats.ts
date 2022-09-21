@@ -2,6 +2,76 @@ import { Client, EmbedBuilder, CommandInteraction, ApplicationCommandOptionType,
 import { getSystemErrorMap } from "util";
 import { Command } from '../Command';
 import { User } from '../models/user';
+import axios from 'axios';
+
+type GameCounter = {
+    survival?: number;
+    defense?: number;
+    normal?: number;
+    hard?: number;
+    insane?: number;
+    pin?: number;
+    nightmare?: number;
+    extinction?: number;
+};
+
+type AchievementInfo = {
+    name: string;
+    rank: number;
+    progress?: number;
+    progressMax?: number;
+}
+
+type PlayerStats = {
+    achievementScore?: number;
+    gamesPlayed?: number;
+    gamesWon?: GameCounter;
+    gamesLost?: GameCounter;
+    timePlayed: {
+        demo?: number;
+        cyborg?: number;
+        sniper?: number;
+        ho?: number;
+        maverick?: number;
+        psychologist?: number;
+        watchman?: number;
+        tactician?: number;
+        medic?: number;
+        pyrotechnician?: number;
+    };
+    achievements: AchievementInfo[];
+};
+
+// Need to get the current Server IP address as it is not static
+const getSwatServerUrl = async(): Promise<string> => {
+    try {
+        const { data } = await axios(`${process.env.SWAT_SERVER_URL}`, {
+            responseType: 'text'
+        });
+        //Get rid of any newline chars included in response
+        return data.replace(/(\r\n|\n|\r)/gm, "");;
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        } else {
+            throw new Error('Unable to get swat server url')
+        }
+    }
+}
+
+const getStatsForUser = async (baseUrl: string, steamId: string): Promise<PlayerStats> => {
+    console.log(`${baseUrl}/playerStats/get?steamIds=${steamId}`);
+    try {
+        const { data } = await axios(`${baseUrl}/playerStats/get?steamIds=${steamId}`)
+        return data
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        } else {
+            throw new Error('Error getting user stats');
+        }
+    }
+}
 
 export const Stats: Command = {
     name: 'stats',
@@ -76,7 +146,19 @@ export const Stats: Command = {
                     break;
                 };
                 case 'me': {
-                    await interaction.reply({ ephemeral: true, content: `Getting stats for ${interaction.user.username}` })
+                    try {
+                        const baseUrl = await getSwatServerUrl();
+                        const statsData = await getStatsForUser(baseUrl, '76561198035839899');
+                        console.log(statsData);
+                        await interaction.reply({ ephemeral: true, content: `Getting stats for ${interaction.user.username}` })
+                        break;
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            await interaction.reply({ ephemeral: true, content: `Error Getting stats for User: ${interaction.user.username} \n ${error.message}`});
+                        } else {
+                            await interaction.reply({ ephemeral: true, content: `Error Getting stats for User: ${interaction.user.username} \n Unkown Error` });
+                        }
+                    }
                     break;
                 }
                 default: {
