@@ -57,10 +57,9 @@ const getSwatServerUrl = async(): Promise<string> => {
             throw new Error('Unable to get swat server url')
         }
     }
-}
+};
 
 const getStatsForUser = async (baseUrl: string, steamId: string): Promise<PlayerStats> => {
-    console.log(`${baseUrl}/playerStats/get?steamIds=${steamId}`);
     try {
         const { data } = await axios(`${baseUrl}/playerStats/get?steamIds=${steamId}`)
         return data
@@ -71,7 +70,7 @@ const getStatsForUser = async (baseUrl: string, steamId: string): Promise<Player
             throw new Error('Error getting user stats');
         }
     }
-}
+};
 
 export const Stats: Command = {
     name: 'stats',
@@ -124,7 +123,20 @@ export const Stats: Command = {
                         const validId = new RegExp(/^[0-9]{17}$/);
 
                         if (validId.test(steamId)) {
-                            await interaction.reply({ ephemeral: true, content: `Registering User ${interaction.user.username} with SteamId: ${steamId}` })
+                            try{
+                                User.create({
+                                    id: interaction.user.id,
+                                    steamId: steamId,
+                                    userName: interaction.user.username 
+                                });
+                                await interaction.reply({ ephemeral: true, content: `Registering User ${interaction.user.username} with SteamId: ${steamId}` })
+                            } catch (error) {
+                                if (error instanceof Error) {
+                                    throw Error;
+                                } else {
+                                    throw new Error('Unable to add user to database')
+                                }
+                            }
                         } else {
                             throw new Error('Invalid SteamId 64')
                         }
@@ -148,10 +160,15 @@ export const Stats: Command = {
                 case 'me': {
                     try {
                         const baseUrl = await getSwatServerUrl();
-                        const statsData = await getStatsForUser(baseUrl, '76561198035839899');
-                        console.log(statsData);
-                        await interaction.reply({ ephemeral: true, content: `Getting stats for ${interaction.user.username}` })
-                        break;
+                        const userData = await User.findByPk(interaction.user.id)
+                        const userSteamId = userData?.get('steamId');
+                        if (userSteamId) {
+                            const statsData = await getStatsForUser(baseUrl, userSteamId);
+                            console.log(statsData);
+                            await interaction.reply({ ephemeral: true, content: `Getting stats for ${interaction.user.username}` })
+                        } else {
+                            throw new Error("User not in database or has no registered steamId");
+                        }
                     } catch (error) {
                         if (error instanceof Error) {
                             await interaction.reply({ ephemeral: true, content: `Error Getting stats for User: ${interaction.user.username} \n ${error.message}`});
