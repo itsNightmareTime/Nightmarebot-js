@@ -1,21 +1,30 @@
-import { Sequelize, DataTypes } from 'sequelize';
-import { database } from '../connection/connection';
+import { Sequelize, DataTypes, Model, CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
+import { database } from "../connection/connection";
 
-export const User = database.define('users', {
-	discordId: {
-		type: DataTypes.STRING,
-		unique: true,
-		allowNull: false
-	},
-	steamId: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	userName: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	{
-		timestamps: false
-	}
-});
+interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+	id: string
+	steamId: string;
+	userName: string;
+}
+
+export const User = database.define<UserModel>("users",
+  {
+    id: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+	  primaryKey: true
+    },
+    steamId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    userName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
