@@ -109,14 +109,11 @@ export const Stats: Command = {
         }
     ],
     run: async (client: Client, interaction: CommandInteraction) => {
-
         if (interaction instanceof ChatInputCommandInteraction) {
             //Figure out which sub command is being used
             const subCommand = interaction.options.getSubcommand();
-
             switch (subCommand) {
                 case 'register': {
-                    console.log(`Registering User: ${interaction.user.username}`)
                     try {
                         const steamId = interaction.options.get('steamid')?.value as string;
                         console.log(`User Steam Id is: ${steamId}`)
@@ -147,15 +144,35 @@ export const Stats: Command = {
                         } else {
                             await interaction.reply({ ephemeral: true, content: `Error Registering User: Unkown` });
                         }
+                    } finally {
+                        break;
                     }
-                    break;
+                    
                 };
                 case 'user': {
-                    const userOption = interaction.options.get('user') as CommandInteractionOption;
-                    const requestedUser = userOption.user;
-
-                    await interaction.reply({ ephemeral: true, content: `Getting stats for ${requestedUser?.username}` })
-                    break;
+                    try {
+                        const baseUrl = await getSwatServerUrl();
+                        const requestedUser = interaction.options.getUser('user');
+                        if (requestedUser) {
+                            const userData = await User.findByPk(requestedUser.id)
+                            const userSteamId = userData?.get('steamId');
+                            if (userSteamId) {
+                                const statsData = await getStatsForUser(baseUrl, userSteamId);
+                                console.log(statsData);
+                                await interaction.reply({ ephemeral: true, content: `Getting stats for ${requestedUser.username}` })
+                            } else {
+                                throw new Error("User not in database or has no registered steamId");
+                            }
+                        }
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            await interaction.reply({ ephemeral: true, content: `Error Getting stats for User \n ${error.message}`});
+                        } else {
+                            await interaction.reply({ ephemeral: true, content: `Error Getting stats for User \n Unkown Error` });
+                        }
+                    } finally {
+                        break;
+                    }
                 };
                 case 'me': {
                     try {
@@ -175,8 +192,9 @@ export const Stats: Command = {
                         } else {
                             await interaction.reply({ ephemeral: true, content: `Error Getting stats for User: ${interaction.user.username} \n Unkown Error` });
                         }
+                    } finally {
+                        break;
                     }
-                    break;
                 }
                 default: {
                     await interaction.reply({ ephemeral: true, content: `Unknown subCommand of stats called` })
