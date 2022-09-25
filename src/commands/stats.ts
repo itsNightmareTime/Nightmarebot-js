@@ -1,19 +1,11 @@
-import { Client, EmbedBuilder, CommandInteraction, ApplicationCommandOptionType, ChatInputCommandInteraction, CommandInteractionOption } from "discord.js";
+import { Client, EmbedBuilder, CommandInteraction, ApplicationCommandOptionType, ChatInputCommandInteraction, User as DiscordUser, APIEmbed, Colors } from "discord.js";
 import { getSystemErrorMap } from "util";
 import { Command } from '../Command';
 import { User } from '../models/user';
 import axios from 'axios';
+import { format } from "path";
 
-type GameCounter = {
-    survival?: number;
-    defense?: number;
-    normal?: number;
-    hard?: number;
-    insane?: number;
-    pin?: number;
-    nightmare?: number;
-    extinction?: number;
-};
+type GameCounter = { [key: string]: number; };
 
 type AchievementInfo = {
     name: string;
@@ -22,24 +14,15 @@ type AchievementInfo = {
     progressMax?: number;
 }
 
+type PlayTimes = { [key: string]: number; };
+
 type PlayerStats = {
     achievementScore?: number;
     gamesPlayed?: number;
     gamesWon?: GameCounter;
     gamesLost?: GameCounter;
-    timePlayed: {
-        demo?: number;
-        cyborg?: number;
-        sniper?: number;
-        ho?: number;
-        maverick?: number;
-        psychologist?: number;
-        watchman?: number;
-        tactician?: number;
-        medic?: number;
-        pyrotechnician?: number;
-    };
-    achievements: AchievementInfo[];
+    timePlayed?: PlayTimes;
+    achievements?: AchievementInfo[];
 };
 
 // Need to get the current Server IP address as it is not static
@@ -71,6 +54,55 @@ const getStatsForUser = async (baseUrl: string, steamId: string): Promise<Player
         }
     }
 };
+
+const generateEmbed = (user: DiscordUser, statsData: PlayerStats): APIEmbed => {
+
+    const getPlayTimes = (playTimes: PlayTimes | undefined): string => {
+        if (playTimes) {
+            const times: string[] = [];
+            for(const time in playTimes) {
+                times.push(`${time}: ${playTimes[time]}`)
+            }
+            return times.join('\n');
+        } else {
+            return 'No Play Time for User'
+        }
+    };
+
+    const getWinLoss = (gamesList: GameCounter| undefined): string => {
+        if (gamesList) {
+            const games: string[] = [];
+            for(const game in gamesList) {
+                games.push(`${game}: ${gamesList[game]}`)
+            }
+        } else {
+            return 'No Games Reported for User'
+        }
+    }
+
+    return {
+        title: 'Stats',
+        color: Colors.DarkerGrey,
+        description: `${user.username}#${user.discriminator}`,
+        fields: [
+            {
+                name: 'Play Time',
+                inline: true,
+                value: getPlayTimes(statsData?.timePlayed)
+            },
+            {
+                name: 'Wins',
+                inline: true,
+                value: getWinLoss(statsData?.gamesWon)
+            },
+            {
+                name: 'Losses',
+                inline: true,
+                value: getWinLoss(statsData?.gamesLost)
+            }
+        ]
+    }
+}
 
 export const Stats: Command = {
     name: 'stats',
@@ -180,7 +212,7 @@ export const Stats: Command = {
                         const userData = await User.findByPk(interaction.user.id)
                         const userSteamId = userData?.get('steamId');
                         if (userSteamId) {
-                            const statsData = await getStatsForUser(baseUrl, userSteamId);
+                            const statsData = await getSt-9+86atsForUser(baseUrl, userSteamId);
                             console.log(statsData);
                             await interaction.reply({ ephemeral: true, content: `Getting stats for ${interaction.user.username}` })
                         } else {
