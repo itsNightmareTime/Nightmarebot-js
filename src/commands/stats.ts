@@ -94,7 +94,7 @@ const generateEmbed = (user: DiscordUser, statsData: PlayerStats): APIEmbed => {
         gamesList.insane += gamesList.pin;
         delete gamesList.pin
     };
-    
+
     if (gamesList) {
       const games: string[] = [];
       for (const game in gamesList) {
@@ -175,7 +175,6 @@ export const Stats: Command = {
         case "register": {
           try {
             const steamId = interaction.options.get("steamid")?.value as string;
-            console.log(`User Steam Id is: ${steamId}`);
             const validId = new RegExp(/^[0-9]{17}$/);
             const user = await User.findByPk(interaction.user.id);
             if (user) {
@@ -255,10 +254,9 @@ export const Stats: Command = {
               const userSteamId = userData?.get("steamId");
               if (userSteamId) {
                 const statsData = await getStatsForUser(baseUrl, userSteamId);
-                console.log(statsData);
                 await interaction.reply({
                   ephemeral: true,
-                  content: `Getting stats for ${requestedUser.username}`,
+                  embeds: [generateEmbed(requestedUser, statsData[0])]
                 });
               } else {
                 throw new Error(
