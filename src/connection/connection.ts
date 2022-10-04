@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-export const database = new Sequelize({
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'database.sqlite',
+export const database = new Sequelize('botdb', 'Class', 'Class123!', {
+	dialect: 'mysql',
+	logging: true,
 });
