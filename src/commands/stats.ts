@@ -10,7 +10,7 @@ import {
 } from "discord.js";
 import { Duration } from "luxon";
 import { Command } from "../Command";
-import { User } from "../models/user";
+import { User } from "../models";
 import axios from "axios";
 
 type GameCounter = { [key: string]: number };

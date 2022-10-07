@@ -7,13 +7,13 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
 	userName: string;
 }
 
-export const User = database.define<UserModel>("users",
+export const User = database.define<UserModel>("user",
   {
     id: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
-	  primaryKey: true
+	    primaryKey: true
     },
     steamId: {
       type: DataTypes.STRING,
@@ -26,5 +26,7 @@ export const User = database.define<UserModel>("users",
   },
   {
     timestamps: false,
+    freezeTableName: true,
+    modelName: 'user'
   }
 );

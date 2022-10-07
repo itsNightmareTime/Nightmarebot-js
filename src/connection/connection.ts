@@ -8,6 +8,5 @@ export const database = new Sequelize(
 	process.env.DB_USER_PASSWORD ? process.env.DB_USER_PASSWORD : '', 
 	{
 		dialect: 'mysql',
-		logging: false,
 	}
 );

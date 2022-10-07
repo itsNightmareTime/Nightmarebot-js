@@ -9,7 +9,7 @@ export default (client: Client): void => {
         }
 
         await client.application.commands.set(Commands);
-        await database.sync();
+        await database.sync({ alter: true });
         console.log(`${client.user.username} is Online`);
     })
 }
