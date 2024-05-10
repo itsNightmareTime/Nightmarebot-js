@@ -8,7 +8,6 @@ import {
   ApplicationCommandOptionType,
 } from 'discord.js';
 import { Duration } from 'luxon';
-import axios from 'axios';
 import { Command } from '../Command';
 import User from '../models/user';
 
@@ -35,9 +34,14 @@ type PlayerStats = {
 // Need to get the current Server IP address as it is not static
 const getSwatServerUrl = async (): Promise<string> => {
   try {
-    const { data } = await axios(`${process.env.SWAT_SERVER_URL}`, {
-      responseType: 'text',
+    const UrlResponse = await fetch(`${process.env.SWAT_SERVER_URL}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'text/xml',
+      },
     });
+
+    const data = await UrlResponse.json() as string;
     // Get rid of any newline chars included in response
     return data.replace(/(\r\n|\n|\r)/gm, '');
   } catch (error) {
@@ -54,9 +58,10 @@ const getStatsForUser = async (
   steamId: string,
 ): Promise<PlayerStats[]> => {
   try {
-    const { data } = await axios(
+    const statsResponse = await fetch(
       `${baseUrl}/playerStats/get?steamIds=${steamId}`,
     );
+    const data = await statsResponse.json() as PlayerStats[];
     return data;
   } catch (error) {
     if (error instanceof Error) {
