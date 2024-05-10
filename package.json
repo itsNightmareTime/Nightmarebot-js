@@ -16,6 +16,7 @@
     "@types/strftime": "^0.9.8",
     "discord.js": "^14.4.0",
     "dotenv": "^16.0.2",
+    "js-yaml": "^4.1.0",
     "luxon": "^3.0.4",
     "mysql2": "^2.3.3",
     "sequelize": "^6.21.5",
@@ -23,6 +24,7 @@
     "strftime": "^0.10.2"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/luxon": "^3.0.1",
     "@types/node": "^20.12.11",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
