@@ -320,6 +320,11 @@
   dependencies:
     undici-types "~6.21.0"
 
+"@types/strftime@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@types/strftime/-/strftime-0.9.8.tgz#1473a08514841faff9c7ea0805afcf66a162b9b6"
+  integrity sha512-QIvDlGAKyF3YJbT3QZnfC+RIvV5noyDbi+ZJ5rkaSRqxCGrYJefgXm3leZAjtoQOutZe1hCXbAg+p89/Vj4HlQ==
+
 "@types/webidl-conversions@*":
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/webidl-conversions/-/webidl-conversions-7.0.3.tgz#1306dbfa53768bcbcfc95a1c8cde367975581859"

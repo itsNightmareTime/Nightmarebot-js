@@ -1,7 +1,6 @@
 import { Client, EmbedBuilder, CommandInteraction } from "discord.js";
-import { describe } from "node:test";
 import { Command } from '../Command';
-const strftime = require('strftime');
+import strftime from 'strftime';
 
 type Challenge = {
 	title: string;

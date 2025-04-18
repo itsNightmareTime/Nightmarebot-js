@@ -9,63 +9,14 @@ import {
 } from "discord.js";
 import { Duration } from "luxon";
 import { Command } from "../Command";
-import { User } from "../models/user";
-import axios from "axios";
+import User from "../models/user";
+import { PlayerStats } from "../interfaces/rcpdinterfaces";
+import RCPDService from "../services/rcpd";
 
-type GameCounter = { [key: string]: number };
+const rcpdservice = new RCPDService();
 
-type AchievementInfo = {
-  name: string;
-  rank: number;
-  progress?: number;
-  progressMax?: number;
-};
-
-type PlayTimes = { [key: string]: number };
-
-type PlayerStats = {
-  achievementScore?: number;
-  gamesPlayed?: number;
-  gamesWon?: GameCounter;
-  gamesLost?: GameCounter;
-  timePlayed?: PlayTimes;
-  achievements?: AchievementInfo[];
-};
-
-// Need to get the current Server IP address as it is not static
-const getSwatServerUrl = async (): Promise<string> => {
-  try {
-    const { data } = await axios(`${process.env.SWAT_SERVER_URL}`, {
-      responseType: "text",
-    });
-    //Get rid of any newline chars included in response
-    return data.replace(/(\r\n|\n|\r)/gm, "");
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    } else {
-      throw new Error("Unable to get swat server url");
-    }
-  }
-};
-
-const getStatsForUser = async (
-  baseUrl: string,
-  steamId: string
-): Promise<PlayerStats[]> => {
-  try {
-    const { data } = await axios(
-      `${baseUrl}/playerStats/get?steamIds=${steamId}`
-    );
-    return data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    } else {
-      throw new Error("Error getting user stats");
-    }
-  }
-};
+type PlayTimes = { [key: string]: number }
+type GameCounter = { [key: string]: number }
 
 const generateEmbed = (user: DiscordUser, statsData: PlayerStats): APIEmbed => {
   const getPlayTimes = (playTimes: PlayTimes | undefined): string => {
@@ -175,19 +126,17 @@ export const Stats: Command = {
           try {
             const steamId = interaction.options.get("steamid")?.value as string;
             const validId = new RegExp(/^[0-9]{17}$/);
-            const user = await User.findByPk(interaction.user.id);
+            const user = await User.findOne({discordId: interaction.user.id})
             if (user) {
               //Update User Instead
               if (validId.test(steamId)) {
                 try {
-                  const newUser = await User.update(
-                    { steamId: steamId },
-                    {
-                      where: {
-                        id: interaction.user.id,
-                      },
-                    }
-                  );
+                  await User.findOneAndUpdate({
+                    discordId: interaction.user.id,
+                  },
+                  {
+                    steamId
+                  });
                   await interaction.reply({
                     ephemeral: true,
                     content: `Updating existing User: ${interaction.user.username} with SteamId: ${steamId}`,
@@ -209,7 +158,7 @@ export const Stats: Command = {
               if (validId.test(steamId)) {
                 try {
                   User.create({
-                    id: interaction.user.id,
+                    discordId: interaction.user.id,
                     steamId: steamId,
                     userName: interaction.user.username,
                   });
@@ -240,19 +189,17 @@ export const Stats: Command = {
                 content: `Error Registering User: Unkown`,
               });
             }
-          } finally {
-            break;
+            
           }
+          break;
         }
         case "user": {
           try {
-            const baseUrl = await getSwatServerUrl();
             const requestedUser = interaction.options.getUser("user");
             if (requestedUser) {
-              const userData = await User.findByPk(requestedUser.id);
-              const userSteamId = userData?.get("steamId");
-              if (userSteamId) {
-                const statsData = await getStatsForUser(baseUrl, userSteamId);
+              const userData = await User.findOne({ discordId: interaction.user.id});
+              if (userData) {
+                const statsData = await rcpdservice.getPlayerStats([userData.steamId]);
                 await interaction.reply({
                   ephemeral: true,
                   embeds: [generateEmbed(requestedUser, statsData[0])]
@@ -275,17 +222,15 @@ export const Stats: Command = {
                 content: `Error Getting stats for User \n Unkown Error`,
               });
             }
-          } finally {
-            break;
           }
+          break;
         }
         case "me": {
           try {
-            const baseUrl = await getSwatServerUrl();
-            const userData = await User.findByPk(interaction.user.id);
+            const userData = await User.findOne({discordId: interaction.user.id})
             const userSteamId = userData?.get("steamId");
             if (userSteamId) {
-              const statsData = await getStatsForUser(baseUrl, userSteamId);
+              const statsData = await rcpdservice.getPlayerStats([userSteamId]);
               await interaction.reply({
                 ephemeral: true,
                 embeds: [generateEmbed(interaction.user, statsData[0])],
@@ -307,9 +252,8 @@ export const Stats: Command = {
                 content: `Error Getting stats for User: ${interaction.user.username} \n Unkown Error`,
               });
             }
-          } finally {
-            break;
           }
+          break;
         }
         default: {
           await interaction.reply({

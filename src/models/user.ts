@@ -1,30 +1,17 @@
-import { Sequelize, DataTypes, Model, CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { database } from "../connection/connection";
+import { Schema, model } from 'mongoose';
 
-interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
-	id: string
-	steamId: string;
-	userName: string;
+interface IUser {
+  discordId: string;
+  steamId: string
+  userName: string;
 }
 
-export const User = database.define<UserModel>("users",
-  {
-    id: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-	  primaryKey: true
-    },
-    steamId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    userName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    timestamps: false,
-  }
-);
+const userSchema = new Schema<IUser>({
+  discordId: { type: String, required: true },
+  steamId: { type: String, required: true },
+  userName: { type: String, required: true },
+});
+
+const userModel = model<IUser>('User', userSchema)
+
+export default userModel
