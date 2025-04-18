@@ -1,6 +1,5 @@
 import {
   Client,
-  EmbedBuilder,
   CommandInteraction,
   ChatInputCommandInteraction,
   User as DiscordUser,

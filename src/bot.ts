@@ -1,6 +1,4 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { Client, ClientOptions, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
 import ready from './listeners/ready';
 import interactionCreate from './listeners/interactionCreate';
